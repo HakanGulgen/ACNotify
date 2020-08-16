@@ -11,12 +11,6 @@ public class StaffManager {
 
     public void removeStaff(String name) { staff.remove(name); }
 
-    public boolean isStaff(String name) {
-        return staff.contains(name);
-    }
-
-    public Collection<String> getAllStaff() {
-        return staff;
-    }
+    public Collection<String> getAllStaff() { return staff; }
 
 }
