@@ -1,0 +1,14 @@
+name: ACNotify
+version: Build 5
+author: HKNGLGN
+description: Lightweight and customizable Spigot/BungeeCord notify plugin for the anti cheats.
+
+main: io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin
+
+softdepend: [Spartan, Reflex, Matrix]
+
+commands:
+  acnotify:
+    description: Notify command.
+  acreload:
+    description: Reload command.
