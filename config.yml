@@ -18,12 +18,14 @@ prefixForNotifyMessages: true
 # BUNGEECORD (Enable this if you want to send notify messages to every server on your network.)
 bungeecord: false
 
+# SERVER NAME (This is required for bungeecord and auto-notify)
+server-name: 'LOBBY-1'
+
 # AUTO NOTIFY (This feature will send notify messages automatic when a warning comes from anti cheat plugin.)
 # Also acnotify command will be disabled.
 # This feature supports BungeeCord mode.
-# Auto Notify feature supports these anti cheats: Spartan, Reflex, Matrix.
+# Auto Notify feature supports these anti cheats: Spartan, Reflex and Matrix.
 auto-notify:
   enabled: false
   min-violation: 1
-  server-name: 'LOBBY-1'
   format: '%prefix% &e%player%&8:&c %hack% &8(&cVL&8:&c %vls%&8) &8| &7Ping&8:&a %ping% ms &8| &7Server:&9 %server%'

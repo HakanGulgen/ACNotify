@@ -42,7 +42,7 @@ public class Notify implements CommandExecutor {
                         DataOutputStream out = new DataOutputStream(b);
                         try {
                             out.writeUTF("acnotify");
-                            out.writeUTF(ChatColor.translateAlternateColorCodes('&', notifyMessage));
+                            out.writeUTF(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -50,9 +50,8 @@ public class Notify implements CommandExecutor {
                     } else {
                         for (final String staffName : staffManager.getAllStaff()) {
                             final Player staff = plugin.getServer().getPlayer(staffName);
-                            if (staff != null) {
-                                staff.sendMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage));
-                            }
+                            if (staff != null)
+                                staff.sendMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
                         }
                     }
                 }

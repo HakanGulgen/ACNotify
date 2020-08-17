@@ -29,9 +29,9 @@ public class Settings {
         reloaded = ChatColor.translateAlternateColorCodes('&', config.getString("reloaded").replace("%prefix%", prefix));
         bungeecord = config.getBoolean("bungeecord");
         notifyPrefix = config.getBoolean("prefixForNotifyMessages");
+        serverName = config.getString("server-name");
         autoNotifyEnabled = config.getBoolean("auto-notify.enabled");
         minViolation = config.getInt("auto-notify.min-violation");
-        serverName = config.getString("auto-notify.server-name");
     }
 
     public String getPrefix() { return prefix; }
