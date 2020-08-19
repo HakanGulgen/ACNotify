@@ -1,10 +1,8 @@
 package io.github.hakangulgen.acnotify.bukkit.command;
 
-import com.google.common.collect.Iterables;
 import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
 import io.github.hakangulgen.acnotify.bukkit.util.Settings;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,15 +36,17 @@ public class Notify implements CommandExecutor {
                     }
                     String notifyMessage = settings.isNotifyPrefix() ? settings.getPrefix() + " " + msg : msg + "";
                     if (settings.isBungeeModeEnabled()) {
-                        ByteArrayOutputStream b = new ByteArrayOutputStream();
-                        DataOutputStream out = new DataOutputStream(b);
-                        try {
-                            out.writeUTF("acnotify");
-                            out.writeUTF(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        Player randomPlayer = plugin.getRandomPlayer();
+                        if (randomPlayer != null) {
+                            ByteArrayOutputStream b = new ByteArrayOutputStream();
+                            DataOutputStream out = new DataOutputStream(b);
+                            try {
+                                out.writeUTF(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            randomPlayer.sendPluginMessage(plugin, "acnotify:notify", b.toByteArray());
                         }
-                        Iterables.getFirst(Bukkit.getOnlinePlayers(), null).sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
                     } else {
                         for (final String staffName : staffManager.getAllStaff()) {
                             final Player staff = plugin.getServer().getPlayer(staffName);

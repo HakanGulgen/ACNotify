@@ -1,10 +1,8 @@
 package io.github.hakangulgen.acnotify.bukkit.listener;
 
-import com.google.common.collect.Iterables;
 import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
 import io.github.hakangulgen.acnotify.bukkit.util.Settings;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,15 +45,17 @@ public class ReflexViolationListener implements Listener {
                     .replace("%server%", settings.getServerName())
                     .replace("%vls%", vls + "");
             if (settings.isBungeeModeEnabled()) {
-                ByteArrayOutputStream b = new ByteArrayOutputStream();
-                DataOutputStream out = new DataOutputStream(b);
-                try {
-                    out.writeUTF("acnotify");
-                    out.writeUTF(autoNotifyFormat);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Player randomPlayer = plugin.getRandomPlayer();
+                if (randomPlayer != null) {
+                    ByteArrayOutputStream b = new ByteArrayOutputStream();
+                    DataOutputStream out = new DataOutputStream(b);
+                    try {
+                        out.writeUTF(autoNotifyFormat);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    randomPlayer.sendPluginMessage(plugin, "acnotify:notify", b.toByteArray());
                 }
-                Iterables.getFirst(Bukkit.getOnlinePlayers(), null).sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
             } else {
                 for (final String staffName : staffManager.getAllStaff()) {
                     final Player staff = plugin.getServer().getPlayer(staffName);

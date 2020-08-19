@@ -7,9 +7,11 @@ import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationUtil;
 import io.github.hakangulgen.acnotify.bukkit.util.Settings;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 public class ACNotifyPlugin extends JavaPlugin {
@@ -26,7 +28,7 @@ public class ACNotifyPlugin extends JavaPlugin {
 
         final Settings settings = new Settings(configurationUtil);
 
-        server.getMessenger().registerOutgoingPluginChannel(this, "ANTICHEATNOTIFY");
+        server.getMessenger().registerOutgoingPluginChannel(this, "acnotify:notify");
 
         getCommand("acreload").setExecutor(new NotifyReload(settings));
 
@@ -57,5 +59,14 @@ public class ACNotifyPlugin extends JavaPlugin {
                 logger.info("AUTO-NOTIFY has been disabled.");
             }
         }
+    }
+
+    public Player getRandomPlayer() {
+        Collection<? extends Player> players = getServer().getOnlinePlayers();
+        if (!players.isEmpty()) {
+            int i = (int) (players.size() * Math.random());
+            return players.toArray(new Player[0])[i];
+        }
+        return null;
     }
 }

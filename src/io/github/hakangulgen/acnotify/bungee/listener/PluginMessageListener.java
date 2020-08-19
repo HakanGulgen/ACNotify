@@ -19,22 +19,19 @@ public class PluginMessageListener implements Listener {
     public PluginMessageListener(StaffManager staffManager) { this.staffManager = staffManager; }
 
     @EventHandler
-    public void onMessage(PluginMessageEvent e) {
-        DataInputStream in = new DataInputStream(new ByteArrayInputStream(e.getData()));
-        try {
-            if (e.getTag().equals("ANTICHEATNOTIFY")) {
-                String utf = in.readUTF();
-                if (utf.equalsIgnoreCase("acnotify")) {
-                    String message = in.readUTF();
-                    for (final String staffName : staffManager.getAllStaff()) {
-                        ProxiedPlayer staff = ProxyServer.getInstance().getPlayer(staffName);
-                        if (staff != null)
-                            staff.sendMessage(TextComponent.fromLegacyText(message));
-                    }
+    public void onMessage(PluginMessageEvent event) {
+        if (event.getTag().equals("acnotify:notify")) {
+            DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
+            try {
+                String notification = in.readUTF();
+                for (final String staffName : staffManager.getAllStaff()) {
+                    ProxiedPlayer staff = ProxyServer.getInstance().getPlayer(staffName);
+                    if (staff != null)
+                        staff.sendMessage(TextComponent.fromLegacyText(notification));
                 }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 }
