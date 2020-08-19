@@ -2,9 +2,12 @@ package io.github.hakangulgen.acnotify.bukkit;
 
 import io.github.hakangulgen.acnotify.bukkit.command.Notify;
 import io.github.hakangulgen.acnotify.bukkit.command.NotifyReload;
-import io.github.hakangulgen.acnotify.bukkit.listener.*;
+import io.github.hakangulgen.acnotify.bukkit.listener.ConnectionListener;
+import io.github.hakangulgen.acnotify.bukkit.listener.MatrixViolationListener;
+import io.github.hakangulgen.acnotify.bukkit.listener.ReflexViolationListener;
+import io.github.hakangulgen.acnotify.bukkit.listener.SpartanViolationListener;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationUtil;
-import io.github.hakangulgen.acnotify.bukkit.util.Settings;
+import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -26,16 +29,15 @@ public class ACNotifyPlugin extends JavaPlugin {
 
         configurationUtil.createConfiguration("%datafolder%/config.yml");
 
-        final Settings settings = new Settings(configurationUtil);
+        final ConfigurationVariables settings = new ConfigurationVariables(configurationUtil);
 
-        server.getMessenger().registerOutgoingPluginChannel(this, "acnotify:notify");
+        server.getMessenger().registerOutgoingPluginChannel(this, "acnotify:channel");
 
         getCommand("acreload").setExecutor(new NotifyReload(settings));
 
         StaffManager staffManager = new StaffManager();
 
-        pluginManager.registerEvents(new PlayerJoinListener(staffManager), this);
-        pluginManager.registerEvents(new PlayerQuitListener(staffManager), this);
+        pluginManager.registerEvents(new ConnectionListener(staffManager), this);
 
         if (!settings.isAutoNotifyEnabled()) {
             getCommand("acnotify").setExecutor(new Notify(this, settings, staffManager));

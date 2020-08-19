@@ -3,7 +3,7 @@ package io.github.hakangulgen.acnotify.bukkit.util;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 
-public class Settings {
+public class ConfigurationVariables {
 
     private final ConfigurationUtil configurationUtil;
 
@@ -13,7 +13,7 @@ public class Settings {
 
     private int minViolation;
 
-    public Settings(ConfigurationUtil configurationUtil) {
+    public ConfigurationVariables(ConfigurationUtil configurationUtil) {
         this.configurationUtil = configurationUtil;
 
         reloadConfig();

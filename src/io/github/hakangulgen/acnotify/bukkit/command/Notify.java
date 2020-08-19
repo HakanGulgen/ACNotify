@@ -1,7 +1,7 @@
 package io.github.hakangulgen.acnotify.bukkit.command;
 
 import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
-import io.github.hakangulgen.acnotify.bukkit.util.Settings;
+import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,10 +17,10 @@ import java.io.IOException;
 public class Notify implements CommandExecutor {
 
     private final ACNotifyPlugin plugin;
-    private final Settings settings;
+    private final ConfigurationVariables settings;
     private final StaffManager staffManager;
 
-    public Notify(ACNotifyPlugin plugin, Settings settings, StaffManager staffManager) {
+    public Notify(ACNotifyPlugin plugin, ConfigurationVariables settings, StaffManager staffManager) {
         this.plugin = plugin;
         this.settings = settings;
         this.staffManager = staffManager;
@@ -41,11 +41,12 @@ public class Notify implements CommandExecutor {
                             ByteArrayOutputStream b = new ByteArrayOutputStream();
                             DataOutputStream out = new DataOutputStream(b);
                             try {
+                                out.writeUTF("notification");
                                 out.writeUTF(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            randomPlayer.sendPluginMessage(plugin, "acnotify:notify", b.toByteArray());
+                            randomPlayer.sendPluginMessage(plugin, "acnotify:channel", b.toByteArray());
                         }
                     } else {
                         for (final String staffName : staffManager.getAllStaff()) {

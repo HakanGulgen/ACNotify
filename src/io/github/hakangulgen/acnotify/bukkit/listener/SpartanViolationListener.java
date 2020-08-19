@@ -1,7 +1,7 @@
 package io.github.hakangulgen.acnotify.bukkit.listener;
 
 import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
-import io.github.hakangulgen.acnotify.bukkit.util.Settings;
+import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import me.vagdedes.spartan.api.API;
 import me.vagdedes.spartan.api.PlayerViolationEvent;
@@ -16,10 +16,10 @@ import java.io.IOException;
 public class SpartanViolationListener implements Listener {
 
     private final ACNotifyPlugin plugin;
-    private final Settings settings;
+    private final ConfigurationVariables settings;
     private final StaffManager staffManager;
 
-    public SpartanViolationListener(ACNotifyPlugin plugin, Settings settings, StaffManager staffManager) {
+    public SpartanViolationListener(ACNotifyPlugin plugin, ConfigurationVariables settings, StaffManager staffManager) {
         this.plugin = plugin;
         this.settings = settings;
         this.staffManager = staffManager;
@@ -47,11 +47,12 @@ public class SpartanViolationListener implements Listener {
                         ByteArrayOutputStream b = new ByteArrayOutputStream();
                         DataOutputStream out = new DataOutputStream(b);
                         try {
+                            out.writeUTF("notification");
                             out.writeUTF(autoNotifyFormat);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        randomPlayer.sendPluginMessage(plugin, "acnotify:notify", b.toByteArray());
+                        randomPlayer.sendPluginMessage(plugin, "acnotify:channel", b.toByteArray());
                     }
                 } else {
                     for (final String staffName : staffManager.getAllStaff()) {

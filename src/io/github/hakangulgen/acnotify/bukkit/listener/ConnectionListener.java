@@ -5,17 +5,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerJoinListener implements Listener {
+public class ConnectionListener implements Listener {
 
     private final StaffManager staffManager;
 
-    public PlayerJoinListener(StaffManager staffManager) { this.staffManager = staffManager; }
+    public ConnectionListener(StaffManager staffManager) { this.staffManager = staffManager; }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         if (player.hasPermission("acnotify.see"))
             staffManager.addStaff(player.getName());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        final Player player = event.getPlayer();
+        staffManager.removeStaff(player.getName());
     }
 }
