@@ -10,10 +10,6 @@ import rip.reflex.api.ReflexAPI;
 import rip.reflex.api.ReflexAPIProvider;
 import rip.reflex.api.event.ReflexCheckEvent;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 public class ReflexViolationListener implements Listener {
 
     private final ACNotifyPlugin plugin;
@@ -45,18 +41,7 @@ public class ReflexViolationListener implements Listener {
                     .replace("%server%", settings.getServerName())
                     .replace("%vls%", vls + "");
             if (settings.isBungeeModeEnabled()) {
-                Player randomPlayer = plugin.getRandomPlayer();
-                if (randomPlayer != null) {
-                    ByteArrayOutputStream b = new ByteArrayOutputStream();
-                    DataOutputStream out = new DataOutputStream(b);
-                    try {
-                        out.writeUTF("notification");
-                        out.writeUTF(autoNotifyFormat);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    randomPlayer.sendPluginMessage(plugin, "acnotify:channel", b.toByteArray());
-                }
+                plugin.sendPluginMessage(autoNotifyFormat);
             } else {
                 for (final String staffName : staffManager.getAllStaff()) {
                     final Player staff = plugin.getServer().getPlayer(staffName);

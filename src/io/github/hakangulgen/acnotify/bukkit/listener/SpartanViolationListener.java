@@ -9,10 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 public class SpartanViolationListener implements Listener {
 
     private final ACNotifyPlugin plugin;
@@ -30,7 +26,7 @@ public class SpartanViolationListener implements Listener {
         if (settings.isAutoNotifyEnabled()) {
             Player player = event.getPlayer();
             int vls = event.getViolation();
-            if (vls > settings.getMinViolation()) {
+            if (vls >= settings.getMinViolation()) {
                 int ping = API.getPing(player);
                 String hack = event.getHackType() + "";
                 String autoNotifyFormat = settings.getAutoNotifyFormat()
@@ -42,18 +38,7 @@ public class SpartanViolationListener implements Listener {
                         .replace("%server%", settings.getServerName())
                         .replace("%vls%", vls + "");
                 if (settings.isBungeeModeEnabled()) {
-                    Player randomPlayer = plugin.getRandomPlayer();
-                    if (randomPlayer != null) {
-                        ByteArrayOutputStream b = new ByteArrayOutputStream();
-                        DataOutputStream out = new DataOutputStream(b);
-                        try {
-                            out.writeUTF("notification");
-                            out.writeUTF(autoNotifyFormat);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        randomPlayer.sendPluginMessage(plugin, "acnotify:channel", b.toByteArray());
-                    }
+                    plugin.sendPluginMessage(autoNotifyFormat);
                 } else {
                     for (final String staffName : staffManager.getAllStaff()) {
                         final Player staff = plugin.getServer().getPlayer(staffName);

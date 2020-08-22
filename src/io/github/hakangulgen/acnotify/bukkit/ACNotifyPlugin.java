@@ -14,6 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -63,7 +66,22 @@ public class ACNotifyPlugin extends JavaPlugin {
         }
     }
 
-    public Player getRandomPlayer() {
+    public void sendPluginMessage(String notification) {
+        Player randomPlayer = this.getRandomPlayer();
+        if (randomPlayer != null) {
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+            try {
+                out.writeUTF("notification");
+                out.writeUTF(notification);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            randomPlayer.sendPluginMessage(this, "acnotify:channel", b.toByteArray());
+        }
+    }
+
+    private Player getRandomPlayer() {
         Collection<? extends Player> players = getServer().getOnlinePlayers();
         if (!players.isEmpty()) {
             int i = (int) (players.size() * Math.random());

@@ -10,10 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 public class Notify implements CommandExecutor {
 
     private final ACNotifyPlugin plugin;
@@ -36,18 +32,7 @@ public class Notify implements CommandExecutor {
                     }
                     String notifyMessage = settings.isNotifyPrefix() ? settings.getPrefix() + " " + msg : msg + "";
                     if (settings.isBungeeModeEnabled()) {
-                        Player randomPlayer = plugin.getRandomPlayer();
-                        if (randomPlayer != null) {
-                            ByteArrayOutputStream b = new ByteArrayOutputStream();
-                            DataOutputStream out = new DataOutputStream(b);
-                            try {
-                                out.writeUTF("notification");
-                                out.writeUTF(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            randomPlayer.sendPluginMessage(plugin, "acnotify:channel", b.toByteArray());
-                        }
+                        plugin.sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
                     } else {
                         for (final String staffName : staffManager.getAllStaff()) {
                             final Player staff = plugin.getServer().getPlayer(staffName);
