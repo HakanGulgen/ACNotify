@@ -19,16 +19,15 @@ public class PluginMessageListener implements Listener {
     public PluginMessageListener(StaffManager staffManager) { this.staffManager = staffManager; }
 
     @EventHandler
-    public void onMessage(PluginMessageEvent event) {
-        if (event.getTag().equals("acnotify:channel")) {
+    public void onMessage(final PluginMessageEvent event) {
+        if (!event.isCancelled() && event.getTag().equals("acnotify:channel")) {
             DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
             try {
-                String subChannel = in.readUTF();
+                final String subChannel = in.readUTF();
                 if (subChannel.equals("notification")) {
-                    String notification = in.readUTF();
-                    ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(notification));
+                    final String notification = in.readUTF();
                     for (final String staffName : staffManager.getAllStaff()) {
-                        ProxiedPlayer staff = ProxyServer.getInstance().getPlayer(staffName);
+                        final ProxiedPlayer staff = ProxyServer.getInstance().getPlayer(staffName);
                         if (staff != null)
                             staff.sendMessage(TextComponent.fromLegacyText(notification));
                     }

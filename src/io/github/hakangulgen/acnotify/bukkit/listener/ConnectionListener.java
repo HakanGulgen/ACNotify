@@ -14,15 +14,17 @@ public class ConnectionListener implements Listener {
     public ConnectionListener(StaffManager staffManager) { this.staffManager = staffManager; }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
+
         if (player.hasPermission("acnotify.see"))
             staffManager.addStaff(player.getName());
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void onQuit(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
+
         staffManager.removeStaff(player.getName());
     }
 }

@@ -26,11 +26,14 @@ public class Notify implements CommandExecutor {
         if (!settings.isAutoNotifyEnabled()) {
             if (sender instanceof ConsoleCommandSender) {
                 if (args.length != 0) {
+
                     StringBuilder msg = new StringBuilder();
                     for (String arg : args) {
                         msg.append(arg).append(" ");
                     }
-                    String notifyMessage = settings.isNotifyPrefix() ? settings.getPrefix() + " " + msg : msg + "";
+
+                    final String notifyMessage = settings.isNotifyPrefix() ? settings.getPrefix() + " " + msg : msg + "";
+
                     if (settings.isBungeeModeEnabled()) {
                         plugin.sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
                     } else {

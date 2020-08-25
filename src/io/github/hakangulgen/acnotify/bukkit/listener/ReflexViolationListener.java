@@ -26,13 +26,13 @@ public class ReflexViolationListener implements Listener {
     }
 
     @EventHandler
-    public void onViolationEvent(ReflexCheckEvent event) {
+    public void onViolationEvent(final ReflexCheckEvent event) {
         if (settings.isAutoNotifyEnabled()) {
-            Player player = event.getPlayer();
-            String vls = event.getViolationId();
-            int ping = reflexAPI.getPing(player);
-            String hack = event.getCheat() + "";
-            String autoNotifyFormat = settings.getAutoNotifyFormat()
+            final Player player = event.getPlayer();
+            final String vls = event.getViolationId();
+            final int ping = reflexAPI.getPing(player);
+            final String hack = event.getCheat() + "";
+            final String autoNotifyFormat = settings.getAutoNotifyFormat()
                     .replace("&", "§")
                     .replace("%prefix%" , settings.getPrefix())
                     .replace("%ping%", ping + "")
@@ -40,6 +40,7 @@ public class ReflexViolationListener implements Listener {
                     .replace("%hack%", hack)
                     .replace("%server%", settings.getServerName())
                     .replace("%vls%", vls + "");
+
             if (settings.isBungeeModeEnabled()) {
                 plugin.sendPluginMessage(autoNotifyFormat);
             } else {

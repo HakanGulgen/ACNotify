@@ -14,15 +14,17 @@ public class ConnectionListener implements Listener {
     public ConnectionListener(StaffManager staffManager) { this.staffManager = staffManager; }
 
     @EventHandler
-    public void onPostLogin(PostLoginEvent event) {
+    public void onPostLogin(final PostLoginEvent event) {
         final ProxiedPlayer player = event.getPlayer();
+
         if (player.hasPermission("acnotify.see"))
             staffManager.addStaff(player.getName());
     }
 
     @EventHandler
-    public void onPlayerDisconnect(PlayerDisconnectEvent event) {
+    public void onPlayerDisconnect(final PlayerDisconnectEvent event) {
         final ProxiedPlayer player = event.getPlayer();
+
         staffManager.removeStaff(player.getName());
     }
 }

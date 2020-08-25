@@ -22,14 +22,15 @@ public class SpartanViolationListener implements Listener {
     }
 
     @EventHandler
-    public void onViolationEvent(PlayerViolationEvent event) {
+    public void onViolationEvent(final PlayerViolationEvent event) {
         if (settings.isAutoNotifyEnabled()) {
-            Player player = event.getPlayer();
-            int vls = event.getViolation();
+            final Player player = event.getPlayer();
+            final int vls = event.getViolation();
+
             if (vls >= settings.getMinViolation()) {
-                int ping = API.getPing(player);
-                String hack = event.getHackType() + "";
-                String autoNotifyFormat = settings.getAutoNotifyFormat()
+                final int ping = API.getPing(player);
+                final String hack = event.getHackType() + "";
+                final String autoNotifyFormat = settings.getAutoNotifyFormat()
                         .replace("&", "§")
                         .replace("%prefix%" , settings.getPrefix())
                         .replace("%ping%", ping + "")
@@ -37,6 +38,7 @@ public class SpartanViolationListener implements Listener {
                         .replace("%hack%", hack)
                         .replace("%server%", settings.getServerName())
                         .replace("%vls%", vls + "");
+
                 if (settings.isBungeeModeEnabled()) {
                     plugin.sendPluginMessage(autoNotifyFormat);
                 } else {

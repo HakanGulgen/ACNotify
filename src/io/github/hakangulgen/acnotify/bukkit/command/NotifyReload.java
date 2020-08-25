@@ -16,14 +16,17 @@ public class NotifyReload implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
-            Player player = (Player) sender;
+            final Player player = (Player) sender;
             if (!player.hasPermission("acnotify.reload")) {
                 player.sendMessage(settings.getNoPermission());
                 return true;
             }
         }
+
         settings.reloadConfig();
+
         sender.sendMessage(settings.getReloaded());
+
         return false;
     }
 }
