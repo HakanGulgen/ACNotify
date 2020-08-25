@@ -28,10 +28,10 @@ public class MatrixViolationListener implements Listener {
     @EventHandler
     public void onViolationEvent(final PlayerViolationEvent event) {
         if (settings.isAutoNotifyEnabled()) {
-            final Player player = event.getPlayer();
             final int vls = event.getViolations();
 
             if (vls >= settings.getMinViolation()) {
+                final Player player = event.getPlayer();
                 final int ping = matrixAPI.getLatency(player);
                 final String hack = event.getHackType() + "";
                 final String autoNotifyFormat = settings.getAutoNotifyFormat()

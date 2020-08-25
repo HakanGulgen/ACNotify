@@ -24,10 +24,10 @@ public class SpartanViolationListener implements Listener {
     @EventHandler
     public void onViolationEvent(final PlayerViolationEvent event) {
         if (settings.isAutoNotifyEnabled()) {
-            final Player player = event.getPlayer();
             final int vls = event.getViolation();
 
             if (vls >= settings.getMinViolation()) {
+                final Player player = event.getPlayer();
                 final int ping = API.getPing(player);
                 final String hack = event.getHackType() + "";
                 final String autoNotifyFormat = settings.getAutoNotifyFormat()
