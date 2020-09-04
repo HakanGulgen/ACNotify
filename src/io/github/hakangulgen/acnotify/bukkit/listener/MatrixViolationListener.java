@@ -2,9 +2,8 @@ package io.github.hakangulgen.acnotify.bukkit.listener;
 
 import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
+import io.github.hakangulgen.acnotify.bukkit.util.Utilities;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
-import me.rerere.matrix.api.MatrixAPI;
-import me.rerere.matrix.api.MatrixAPIProvider;
 import me.rerere.matrix.api.events.PlayerViolationEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,23 +15,24 @@ public class MatrixViolationListener implements Listener {
     private final ConfigurationVariables settings;
     private final StaffManager staffManager;
 
-    private final MatrixAPI matrixAPI;
-
     public MatrixViolationListener(ACNotifyPlugin plugin, ConfigurationVariables settings, StaffManager staffManager) {
         this.plugin = plugin;
         this.settings = settings;
         this.staffManager = staffManager;
-        this.matrixAPI = MatrixAPIProvider.getAPI();
     }
 
     @EventHandler
     public void onViolationEvent(final PlayerViolationEvent event) {
         if (settings.isAutoNotifyEnabled()) {
+
             final int vls = event.getViolations();
 
             if (vls >= settings.getMinViolation()) {
+
+                final Utilities utilities = plugin.getUtilities();
+
                 final Player player = event.getPlayer();
-                final int ping = matrixAPI.getLatency(player);
+                final int ping = utilities.getPing(player);
                 final String hack = event.getHackType() + "";
                 final String autoNotifyFormat = settings.getAutoNotifyFormat()
                         .replace("&", "§")
@@ -44,7 +44,7 @@ public class MatrixViolationListener implements Listener {
                         .replace("%vls%", vls + "");
 
                 if (settings.isBungeeModeEnabled()) {
-                    plugin.sendPluginMessage(autoNotifyFormat);
+                    utilities.sendPluginMessage(autoNotifyFormat);
                 } else {
                     for (final String staffName : staffManager.getAllStaff()) {
                         final Player staff = plugin.getServer().getPlayer(staffName);

@@ -35,7 +35,7 @@ public class Notify implements CommandExecutor {
                     final String notifyMessage = settings.isNotifyPrefix() ? settings.getPrefix() + " " + msg : msg + "";
 
                     if (settings.isBungeeModeEnabled()) {
-                        plugin.sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
+                        plugin.getUtilities().sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
                     } else {
                         for (final String staffName : staffManager.getAllStaff()) {
                             final Player staff = plugin.getServer().getPlayer(staffName);

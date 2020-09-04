@@ -8,19 +8,17 @@ import io.github.hakangulgen.acnotify.bukkit.listener.ReflexViolationListener;
 import io.github.hakangulgen.acnotify.bukkit.listener.SpartanViolationListener;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationUtil;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
+import io.github.hakangulgen.acnotify.bukkit.util.Utilities;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import org.bukkit.Server;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 public class ACNotifyPlugin extends JavaPlugin {
+
+    private Utilities utilities;
 
     @Override
     public void onEnable() {
@@ -38,9 +36,11 @@ public class ACNotifyPlugin extends JavaPlugin {
 
         getCommand("acreload").setExecutor(new NotifyReload(settings));
 
-        StaffManager staffManager = new StaffManager();
+        final StaffManager staffManager = new StaffManager();
 
         pluginManager.registerEvents(new ConnectionListener(staffManager), this);
+
+        utilities = new Utilities(this);
 
         if (!settings.isAutoNotifyEnabled()) {
             getCommand("acnotify").setExecutor(new Notify(this, settings, staffManager));
@@ -66,27 +66,6 @@ public class ACNotifyPlugin extends JavaPlugin {
         }
     }
 
-    public void sendPluginMessage(String notification) {
-        Player randomPlayer = this.getRandomPlayer();
-        if (randomPlayer != null) {
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(b);
-            try {
-                out.writeUTF("notification");
-                out.writeUTF(notification);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            randomPlayer.sendPluginMessage(this, "acnotify:channel", b.toByteArray());
-        }
-    }
+    public Utilities getUtilities() { return utilities; }
 
-    private Player getRandomPlayer() {
-        Collection<? extends Player> players = getServer().getOnlinePlayers();
-        if (!players.isEmpty()) {
-            int i = (int) (players.size() * Math.random());
-            return players.toArray(new Player[0])[i];
-        }
-        return null;
-    }
 }

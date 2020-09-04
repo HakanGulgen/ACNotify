@@ -24,7 +24,8 @@ public class ConnectionListener implements Listener {
     @EventHandler
     public void onQuit(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
+        final String name = player.getName();
 
-        staffManager.removeStaff(player.getName());
+        staffManager.removeStaff(name);
     }
 }

@@ -2,12 +2,11 @@ package io.github.hakangulgen.acnotify.bukkit.listener;
 
 import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
+import io.github.hakangulgen.acnotify.bukkit.util.Utilities;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import rip.reflex.api.ReflexAPI;
-import rip.reflex.api.ReflexAPIProvider;
 import rip.reflex.api.event.ReflexCheckEvent;
 
 public class ReflexViolationListener implements Listener {
@@ -16,21 +15,21 @@ public class ReflexViolationListener implements Listener {
     private final ConfigurationVariables settings;
     private final StaffManager staffManager;
 
-    private final ReflexAPI reflexAPI;
-
     public ReflexViolationListener(ACNotifyPlugin plugin, ConfigurationVariables settings, StaffManager staffManager) {
         this.plugin = plugin;
         this.settings = settings;
         this.staffManager = staffManager;
-        this.reflexAPI = ReflexAPIProvider.getAPI();
     }
 
     @EventHandler
     public void onViolationEvent(final ReflexCheckEvent event) {
         if (settings.isAutoNotifyEnabled()) {
+
+            final Utilities utilities = plugin.getUtilities();
+
             final Player player = event.getPlayer();
             final String vls = event.getViolationId();
-            final int ping = reflexAPI.getPing(player);
+            final int ping = utilities.getPing(player);
             final String hack = event.getCheat() + "";
             final String autoNotifyFormat = settings.getAutoNotifyFormat()
                     .replace("&", "§")
@@ -42,7 +41,7 @@ public class ReflexViolationListener implements Listener {
                     .replace("%vls%", vls + "");
 
             if (settings.isBungeeModeEnabled()) {
-                plugin.sendPluginMessage(autoNotifyFormat);
+                utilities.sendPluginMessage(autoNotifyFormat);
             } else {
                 for (final String staffName : staffManager.getAllStaff()) {
                     final Player staff = plugin.getServer().getPlayer(staffName);

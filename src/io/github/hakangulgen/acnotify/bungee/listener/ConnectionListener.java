@@ -24,7 +24,8 @@ public class ConnectionListener implements Listener {
     @EventHandler
     public void onPlayerDisconnect(final PlayerDisconnectEvent event) {
         final ProxiedPlayer player = event.getPlayer();
+        final String name = player.getName();
 
-        staffManager.removeStaff(player.getName());
+        staffManager.removeStaff(name);
     }
 }
