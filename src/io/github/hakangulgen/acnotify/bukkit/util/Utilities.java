@@ -16,8 +16,8 @@ public class Utilities {
 
     public int getPing(Player player) {
         try {
-            String bukkitversion = plugin.getServer().getClass().getPackage().getName().substring(23);
-            Class<?> craftPlayer = Class.forName("org.bukkit.craftbukkit." + bukkitversion + ".entity.CraftPlayer");
+            String serverVersion = plugin.getServer().getClass().getPackage().getName().substring(23);
+            Class<?> craftPlayer = Class.forName("org.bukkit.craftbukkit." + serverVersion + ".entity.CraftPlayer");
             Object handle = craftPlayer.getMethod("getHandle").invoke(player);
             return (Integer) handle.getClass().getDeclaredField("ping").get(handle);
         } catch (Exception ignored) {

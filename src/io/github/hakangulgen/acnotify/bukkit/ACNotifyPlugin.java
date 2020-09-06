@@ -24,7 +24,6 @@ public class ACNotifyPlugin extends JavaPlugin {
     public void onEnable() {
         final Server server = this.getServer();
         final PluginManager pluginManager = server.getPluginManager();
-        final Logger logger = this.getLogger();
 
         final ConfigurationUtil configurationUtil = new ConfigurationUtil(this);
 
@@ -45,14 +44,19 @@ public class ACNotifyPlugin extends JavaPlugin {
         if (!settings.isAutoNotifyEnabled()) {
             getCommand("acnotify").setExecutor(new Notify(this, settings, staffManager));
         } else {
+            final Logger logger = this.getLogger();
+
             if (pluginManager.getPlugin("Spartan") != null) {
                 pluginManager.registerEvents(new SpartanViolationListener(this, settings, staffManager), this);
+
                 logger.info("AUTO-NOTIFY hooked with Spartan.");
             } else if (pluginManager.getPlugin("Matrix") != null) {
                 pluginManager.registerEvents(new MatrixViolationListener(this, settings, staffManager), this);
+
                 logger.info("AUTO-NOTIFY hooked with Matrix.");
             } else if (pluginManager.getPlugin("Reflex") != null) {
                 pluginManager.registerEvents(new ReflexViolationListener(this, settings, staffManager), this);
+
                 logger.info("AUTO-NOTIFY hooked with Reflex.");
             } else {
                 settings.setAutoNotifyEnabled(false);
