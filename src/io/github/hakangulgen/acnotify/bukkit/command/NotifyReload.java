@@ -8,24 +8,22 @@ import org.bukkit.entity.Player;
 
 public class NotifyReload implements CommandExecutor {
 
-    private final ConfigurationVariables settings;
+    private final ConfigurationVariables variables;
 
-    public NotifyReload(ConfigurationVariables settings) {
-        this.settings = settings;
-    }
+    public NotifyReload(ConfigurationVariables variables) { this.variables = variables; }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             if (!player.hasPermission("acnotify.reload")) {
-                player.sendMessage(settings.getNoPermission());
+                player.sendMessage(variables.getNoPermission());
                 return true;
             }
         }
 
-        settings.reloadConfig();
+        variables.reloadConfig();
 
-        sender.sendMessage(settings.getReloaded());
+        sender.sendMessage(variables.getReloaded());
 
         return false;
     }

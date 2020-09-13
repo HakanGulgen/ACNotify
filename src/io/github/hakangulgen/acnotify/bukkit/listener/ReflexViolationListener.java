@@ -12,18 +12,18 @@ import rip.reflex.api.event.ReflexCheckEvent;
 public class ReflexViolationListener implements Listener {
 
     private final ACNotifyPlugin plugin;
-    private final ConfigurationVariables settings;
+    private final ConfigurationVariables variables;
     private final StaffManager staffManager;
 
-    public ReflexViolationListener(ACNotifyPlugin plugin, ConfigurationVariables settings, StaffManager staffManager) {
+    public ReflexViolationListener(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager) {
         this.plugin = plugin;
-        this.settings = settings;
+        this.variables = variables;
         this.staffManager = staffManager;
     }
 
     @EventHandler
     public void onViolationEvent(final ReflexCheckEvent event) {
-        if (settings.isAutoNotifyEnabled()) {
+        if (variables.isAutoNotifyEnabled()) {
 
             final Utilities utilities = plugin.getUtilities();
 
@@ -31,16 +31,16 @@ public class ReflexViolationListener implements Listener {
             final String vls = event.getViolationId();
             final int ping = utilities.getPing(player);
             final String hack = event.getCheat() + "";
-            final String autoNotifyFormat = settings.getAutoNotifyFormat()
+            final String autoNotifyFormat = variables.getAutoNotifyFormat()
                     .replace("&", "§")
-                    .replace("%prefix%" , settings.getPrefix())
+                    .replace("%prefix%" , variables.getPrefix())
                     .replace("%ping%", ping + "")
                     .replace("%player%", player.getName())
                     .replace("%hack%", hack)
-                    .replace("%server%", settings.getServerName())
+                    .replace("%server%", variables.getServerName())
                     .replace("%vls%", vls + "");
 
-            if (settings.isBungeeModeEnabled()) {
+            if (variables.isBungeeModeEnabled()) {
                 utilities.sendPluginMessage(autoNotifyFormat);
             } else {
                 for (final String staffName : staffManager.getAllStaff()) {

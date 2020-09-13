@@ -29,39 +29,39 @@ public class ACNotifyPlugin extends JavaPlugin {
 
         configurationUtil.createConfiguration("%datafolder%/config.yml");
 
-        final ConfigurationVariables settings = new ConfigurationVariables(configurationUtil);
+        final ConfigurationVariables variables = new ConfigurationVariables(configurationUtil);
 
         server.getMessenger().registerOutgoingPluginChannel(this, "acnotify:channel");
 
-        getCommand("acreload").setExecutor(new NotifyReload(settings));
+        getCommand("acreload").setExecutor(new NotifyReload(variables));
 
         final StaffManager staffManager = new StaffManager();
 
-        pluginManager.registerEvents(new ConnectionListener(staffManager), this);
+        pluginManager.registerEvents(new ConnectionListener(staffManager, variables), this);
 
         utilities = new Utilities(this);
 
-        if (!settings.isAutoNotifyEnabled()) {
-            getCommand("acnotify").setExecutor(new Notify(this, settings, staffManager));
+        if (!variables.isAutoNotifyEnabled()) {
+            getCommand("acnotify").setExecutor(new Notify(this, variables, staffManager));
         } else {
             final Logger logger = this.getLogger();
 
             if (pluginManager.getPlugin("Spartan") != null) {
-                pluginManager.registerEvents(new SpartanViolationListener(this, settings, staffManager), this);
+                pluginManager.registerEvents(new SpartanViolationListener(this, variables, staffManager), this);
 
                 logger.info("AUTO-NOTIFY hooked with Spartan.");
             } else if (pluginManager.getPlugin("Matrix") != null) {
-                pluginManager.registerEvents(new MatrixViolationListener(this, settings, staffManager), this);
+                pluginManager.registerEvents(new MatrixViolationListener(this, variables, staffManager), this);
 
                 logger.info("AUTO-NOTIFY hooked with Matrix.");
             } else if (pluginManager.getPlugin("Reflex") != null) {
-                pluginManager.registerEvents(new ReflexViolationListener(this, settings, staffManager), this);
+                pluginManager.registerEvents(new ReflexViolationListener(this, variables, staffManager), this);
 
                 logger.info("AUTO-NOTIFY hooked with Reflex.");
             } else {
-                settings.setAutoNotifyEnabled(false);
+                variables.setAutoNotifyEnabled(false);
 
-                getCommand("acnotify").setExecutor(new Notify(this, settings, staffManager));
+                getCommand("acnotify").setExecutor(new Notify(this, variables, staffManager));
 
                 logger.info("There is no supported anti cheat plugin for AUTO-NOTIFY.");
                 logger.info("Supported plugins: Spartan, Reflex, Matrix.");

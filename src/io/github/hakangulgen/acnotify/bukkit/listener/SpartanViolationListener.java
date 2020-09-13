@@ -12,38 +12,38 @@ import org.bukkit.event.Listener;
 public class SpartanViolationListener implements Listener {
 
     private final ACNotifyPlugin plugin;
-    private final ConfigurationVariables settings;
+    private final ConfigurationVariables variables;
     private final StaffManager staffManager;
 
-    public SpartanViolationListener(ACNotifyPlugin plugin, ConfigurationVariables settings, StaffManager staffManager) {
+    public SpartanViolationListener(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager) {
         this.plugin = plugin;
-        this.settings = settings;
+        this.variables = variables;
         this.staffManager = staffManager;
     }
 
     @EventHandler
     public void onViolationEvent(final PlayerViolationEvent event) {
-        if (settings.isAutoNotifyEnabled()) {
+        if (variables.isAutoNotifyEnabled()) {
 
             final int vls = event.getViolation();
 
-            if (vls >= settings.getMinViolation()) {
+            if (vls >= variables.getMinViolation()) {
 
                 final Utilities utilities = plugin.getUtilities();
 
                 final Player player = event.getPlayer();
                 final int ping = utilities.getPing(player);
                 final String hack = event.getHackType() + "";
-                final String autoNotifyFormat = settings.getAutoNotifyFormat()
+                final String autoNotifyFormat = variables.getAutoNotifyFormat()
                         .replace("&", "§")
-                        .replace("%prefix%" , settings.getPrefix())
+                        .replace("%prefix%" , variables.getPrefix())
                         .replace("%ping%", ping + "")
                         .replace("%player%", player.getName())
                         .replace("%hack%", hack)
-                        .replace("%server%", settings.getServerName())
+                        .replace("%server%", variables.getServerName())
                         .replace("%vls%", vls + "");
 
-                if (settings.isBungeeModeEnabled()) {
+                if (variables.isBungeeModeEnabled()) {
                     utilities.sendPluginMessage(autoNotifyFormat);
                 } else {
                     for (final String staffName : staffManager.getAllStaff()) {

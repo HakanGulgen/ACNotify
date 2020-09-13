@@ -1,28 +1,29 @@
-# SPIGOT CONFIGURATION.
+# SPIGOT CONFIGURATION
 # DO NOT USE REVIEW SECTION FOR BUGS.
-# DISCORD: hknn#1229
+# DISCORD: hknn#8888
 
 # PERMISSIONS
 # NOTIFY: acnotify.see, RELOAD: acnotify.reload
 
 # MESSAGES
-prefix: '&8[&3ACNotify&8]&r'
-reloaded: '%prefix% &aPlugin has been reloaded.'
-no-permission: '%prefix% &cYou do not have permission to use this command.'
-only-console: '%prefix% &cThis command can only be used by a console.'
+messages:
+  prefix: '&8[&3ACNotify&8]&r'
+  reloaded: '%prefix% &aPlugin has been reloaded.'
+  no-permission: '%prefix% &cYou do not have permission to use this command.'
+  only-console: '%prefix% &cThis command can only be used by a console.'
 
-# NOTIFY PREFIX
-# Disable this if you don't want prefix on notify command.
-prefixForNotifyMessages: true
+# SETTINGS
+settings:
+  # Enable this if you want to send notify messages to every server on your network.
+  bungeecord: false
 
-# BUNGEECORD (Enable this if you want to send notify messages to every server on your network.)
-bungeecord: false
+  # Disable this if you don't want prefix on notify command.
+  prefixForNotifyMessages: true
 
-# SERVER NAME (This is required for bungeecord and auto-notify)
-server-name: 'LOBBY-1'
+  # This is required for BungeeCord Auto Notify.
+  server-name: 'LOBBY-1'
 
 # AUTO NOTIFY (This feature will send notify messages automatic when a warning comes from anti cheat plugin.)
-# Also acnotify command will be disabled.
 # This feature supports BungeeCord mode.
 # Auto Notify feature supports these anti cheats: Spartan, Reflex and Matrix.
 auto-notify:

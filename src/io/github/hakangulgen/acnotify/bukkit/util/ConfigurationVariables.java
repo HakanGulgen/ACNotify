@@ -22,14 +22,14 @@ public class ConfigurationVariables {
     public void reloadConfig() {
         final Configuration config = configurationUtil.getConfiguration("%datafolder%/config.yml");
 
-        prefix = ChatColor.translateAlternateColorCodes('&', config.getString("prefix"));
-        onlyConsole = ChatColor.translateAlternateColorCodes('&', config.getString("only-console").replace("%prefix%", prefix));
+        prefix = ChatColor.translateAlternateColorCodes('&', config.getString("messages.prefix"));
+        onlyConsole = ChatColor.translateAlternateColorCodes('&', config.getString("messages.only-console").replace("%prefix%", prefix));
         autoNotifyFormat = ChatColor.translateAlternateColorCodes('&', config.getString("auto-notify.format"));
-        noPermission = ChatColor.translateAlternateColorCodes('&', config.getString("no-permission").replace("%prefix%", prefix));
-        reloaded = ChatColor.translateAlternateColorCodes('&', config.getString("reloaded").replace("%prefix%", prefix));
-        bungeecord = config.getBoolean("bungeecord");
-        notifyPrefix = config.getBoolean("prefixForNotifyMessages");
-        serverName = config.getString("server-name");
+        noPermission = ChatColor.translateAlternateColorCodes('&', config.getString("messages.no-permission").replace("%prefix%", prefix));
+        reloaded = ChatColor.translateAlternateColorCodes('&', config.getString("messages.reloaded").replace("%prefix%", prefix));
+        bungeecord = config.getBoolean("settings.bungeecord");
+        notifyPrefix = config.getBoolean("settings.prefixForNotifyMessages");
+        serverName = config.getString("settings.server-name");
         autoNotifyEnabled = config.getBoolean("auto-notify.enabled");
         minViolation = config.getInt("auto-notify.min-violation");
     }

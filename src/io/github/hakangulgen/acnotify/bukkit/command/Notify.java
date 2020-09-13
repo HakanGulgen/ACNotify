@@ -13,17 +13,17 @@ import org.bukkit.entity.Player;
 public class Notify implements CommandExecutor {
 
     private final ACNotifyPlugin plugin;
-    private final ConfigurationVariables settings;
+    private final ConfigurationVariables variables;
     private final StaffManager staffManager;
 
-    public Notify(ACNotifyPlugin plugin, ConfigurationVariables settings, StaffManager staffManager) {
+    public Notify(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager) {
         this.plugin = plugin;
-        this.settings = settings;
+        this.variables = variables;
         this.staffManager = staffManager;
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!settings.isAutoNotifyEnabled()) {
+        if (!variables.isAutoNotifyEnabled()) {
             if (sender instanceof ConsoleCommandSender) {
                 if (args.length != 0) {
 
@@ -32,20 +32,20 @@ public class Notify implements CommandExecutor {
                         msg.append(arg).append(" ");
                     }
 
-                    final String notifyMessage = settings.isNotifyPrefix() ? settings.getPrefix() + " " + msg : msg + "";
+                    final String notifyMessage = variables.isNotifyPrefix() ? variables.getPrefix() + " " + msg : msg + "";
 
-                    if (settings.isBungeeModeEnabled()) {
-                        plugin.getUtilities().sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
+                    if (variables.isBungeeModeEnabled()) {
+                        plugin.getUtilities().sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", variables.getServerName())));
                     } else {
                         for (final String staffName : staffManager.getAllStaff()) {
                             final Player staff = plugin.getServer().getPlayer(staffName);
                             if (staff != null)
-                                staff.sendMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", settings.getServerName())));
+                                staff.sendMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", variables.getServerName())));
                         }
                     }
                 }
             } else {
-                sender.sendMessage(settings.getOnlyConsole());
+                sender.sendMessage(variables.getOnlyConsole());
             }
         }
         return false;
