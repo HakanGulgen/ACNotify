@@ -13,6 +13,7 @@ public class ACNotifyPlugin extends Plugin {
     public void onEnable() {
         final ProxyServer server = this.getProxy();
         final PluginManager pluginManager = server.getPluginManager();
+
         final StaffManager staffManager = new StaffManager();
 
         server.registerChannel("acnotify:channel");

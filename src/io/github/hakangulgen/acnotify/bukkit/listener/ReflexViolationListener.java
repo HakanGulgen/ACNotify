@@ -7,7 +7,11 @@ import io.github.hakangulgen.acnotify.shared.StaffManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import rip.reflex.api.ReflexAPI;
+import rip.reflex.api.ReflexAPIProvider;
 import rip.reflex.api.event.ReflexCheckEvent;
+
+import java.util.Objects;
 
 public class ReflexViolationListener implements Listener {
 
@@ -15,10 +19,14 @@ public class ReflexViolationListener implements Listener {
     private final ConfigurationVariables variables;
     private final StaffManager staffManager;
 
+    private final ReflexAPI reflexAPI;
+
     public ReflexViolationListener(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager) {
         this.plugin = plugin;
         this.variables = variables;
         this.staffManager = staffManager;
+
+        this.reflexAPI = ReflexAPIProvider.getAPI();
     }
 
     @EventHandler
@@ -29,7 +37,7 @@ public class ReflexViolationListener implements Listener {
 
             final Player player = event.getPlayer();
             final String vls = event.getViolationId();
-            final int ping = utilities.getPing(player);
+            final int ping = reflexAPI.getPing(player);
             final String hack = event.getCheat() + "";
             final String autoNotifyFormat = variables.getAutoNotifyFormat()
                     .replace("&", "§")
@@ -43,11 +51,7 @@ public class ReflexViolationListener implements Listener {
             if (variables.isBungeeModeEnabled()) {
                 utilities.sendPluginMessage(autoNotifyFormat);
             } else {
-                for (final String staffName : staffManager.getAllStaff()) {
-                    final Player staff = plugin.getServer().getPlayer(staffName);
-                    if (staff != null)
-                        staff.sendMessage(autoNotifyFormat);
-                }
+                staffManager.getAllStaff().stream().map(staffName -> plugin.getServer().getPlayer(staffName)).filter(Objects::nonNull).forEach(staff -> staff.sendMessage(autoNotifyFormat));
             }
         }
     }

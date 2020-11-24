@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionListener implements Listener {
@@ -32,16 +31,6 @@ public class ConnectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(final PlayerQuitEvent event) {
-        if (variables.isBungeeModeEnabled()) return;
-
-        final Player player = event.getPlayer();
-        final String name = player.getName();
-
-        staffManager.removeStaff(name);
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onKick(final PlayerKickEvent event) {
         if (variables.isBungeeModeEnabled()) return;
 
         final Player player = event.getPlayer();

@@ -8,7 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class Notify implements CommandExecutor {
 
@@ -28,6 +29,7 @@ public class Notify implements CommandExecutor {
                 if (args.length != 0) {
 
                     StringBuilder msg = new StringBuilder();
+
                     for (String arg : args) {
                         msg.append(arg).append(" ");
                     }
@@ -37,11 +39,7 @@ public class Notify implements CommandExecutor {
                     if (variables.isBungeeModeEnabled()) {
                         plugin.getUtilities().sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", variables.getServerName())));
                     } else {
-                        for (final String staffName : staffManager.getAllStaff()) {
-                            final Player staff = plugin.getServer().getPlayer(staffName);
-                            if (staff != null)
-                                staff.sendMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", variables.getServerName())));
-                        }
+                        staffManager.getAllStaff().stream().map(staffName -> plugin.getServer().getPlayer(staffName)).filter(Objects::nonNull).forEach(staff -> staff.sendMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", variables.getServerName()))));
                     }
                 }
             } else {

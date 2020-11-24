@@ -14,24 +14,12 @@ public class Utilities {
 
     public Utilities(ACNotifyPlugin plugin) { this.plugin = plugin; }
 
-    public int getPing(Player player) {
-        try {
-            String serverVersion = plugin.getServer().getClass().getPackage().getName().substring(23);
-            Class<?> craftPlayer = Class.forName("org.bukkit.craftbukkit." + serverVersion + ".entity.CraftPlayer");
-            Object handle = craftPlayer.getMethod("getHandle").invoke(player);
-            return (Integer) handle.getClass().getDeclaredField("ping").get(handle);
-        } catch (Exception ignored) {
-            return 0;
-        }
-    }
-
-    public void sendPluginMessage(String notification) {
-        Player randomPlayer = this.getRandomPlayer();
+    public void sendPluginMessage(final String notification) {
+        final Player randomPlayer = this.getRandomPlayer();
         if (randomPlayer != null) {
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             DataOutputStream out = new DataOutputStream(b);
             try {
-                out.writeUTF("notification");
                 out.writeUTF(notification);
             } catch (IOException e) {
                 e.printStackTrace();

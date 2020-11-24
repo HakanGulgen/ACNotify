@@ -23,6 +23,7 @@ public class ACNotifyPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         final Server server = this.getServer();
+
         final PluginManager pluginManager = server.getPluginManager();
 
         final ConfigurationUtil configurationUtil = new ConfigurationUtil(this);
@@ -49,23 +50,23 @@ public class ACNotifyPlugin extends JavaPlugin {
             if (pluginManager.getPlugin("Spartan") != null) {
                 pluginManager.registerEvents(new SpartanViolationListener(this, variables, staffManager), this);
 
-                logger.info("AUTO-NOTIFY hooked with Spartan.");
+                logger.info("AUTO-NOTIFICATION hooked with Spartan.");
             } else if (pluginManager.getPlugin("Matrix") != null) {
                 pluginManager.registerEvents(new MatrixViolationListener(this, variables, staffManager), this);
 
-                logger.info("AUTO-NOTIFY hooked with Matrix.");
+                logger.info("AUTO-NOTIFICATION hooked with Matrix.");
             } else if (pluginManager.getPlugin("Reflex") != null) {
                 pluginManager.registerEvents(new ReflexViolationListener(this, variables, staffManager), this);
 
-                logger.info("AUTO-NOTIFY hooked with Reflex.");
+                logger.info("AUTO-NOTIFICATION hooked with Reflex.");
             } else {
                 variables.setAutoNotifyEnabled(false);
 
                 getCommand("acnotify").setExecutor(new Notify(this, variables, staffManager));
 
-                logger.info("There is no supported anti cheat plugin for AUTO-NOTIFY.");
+                logger.info("There is no supported anti cheat plugin for AUTO-NOTIFICATION.");
                 logger.info("Supported plugins: Spartan, Reflex, Matrix.");
-                logger.info("AUTO-NOTIFY has been disabled.");
+                logger.info("AUTO-NOTIFICATION has been disabled.");
             }
         }
     }

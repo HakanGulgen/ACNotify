@@ -5,10 +5,11 @@ import com.google.common.io.ByteStreams;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+
+import java.util.Objects;
 
 public class PluginMessageListener implements Listener {
 
@@ -16,7 +17,7 @@ public class PluginMessageListener implements Listener {
 
     public PluginMessageListener(StaffManager staffManager) { this.staffManager = staffManager; }
 
-    @EventHandler
+    @EventHandler(priority = 32)
     public void onMessage(final PluginMessageEvent event) {
         if (event.isCancelled()) return;
 
@@ -24,16 +25,8 @@ public class PluginMessageListener implements Listener {
 
         ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
 
-        final String subChannel = in.readUTF();
-
-        if (!subChannel.equals("notification")) return;
-
         final String notification = in.readUTF();
 
-        for (final String staffName : staffManager.getAllStaff()) {
-            final ProxiedPlayer staff = ProxyServer.getInstance().getPlayer(staffName);
-            if (staff != null)
-                staff.sendMessage(TextComponent.fromLegacyText(notification));
-        }
+        staffManager.getAllStaff().stream().map(staffName -> ProxyServer.getInstance().getPlayer(staffName)).filter(Objects::nonNull).forEach(staff -> staff.sendMessage(TextComponent.fromLegacyText(notification)));
     }
 }

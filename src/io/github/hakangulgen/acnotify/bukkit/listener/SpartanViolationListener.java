@@ -4,10 +4,13 @@ import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
 import io.github.hakangulgen.acnotify.bukkit.util.Utilities;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
+import me.vagdedes.spartan.api.API;
 import me.vagdedes.spartan.api.PlayerViolationEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
+import java.util.Objects;
 
 public class SpartanViolationListener implements Listener {
 
@@ -32,7 +35,7 @@ public class SpartanViolationListener implements Listener {
                 final Utilities utilities = plugin.getUtilities();
 
                 final Player player = event.getPlayer();
-                final int ping = utilities.getPing(player);
+                final int ping = API.getPing(player);
                 final String hack = event.getHackType() + "";
                 final String autoNotifyFormat = variables.getAutoNotifyFormat()
                         .replace("&", "§")
@@ -46,11 +49,7 @@ public class SpartanViolationListener implements Listener {
                 if (variables.isBungeeModeEnabled()) {
                     utilities.sendPluginMessage(autoNotifyFormat);
                 } else {
-                    for (final String staffName : staffManager.getAllStaff()) {
-                        final Player staff = plugin.getServer().getPlayer(staffName);
-                        if (staff != null)
-                            staff.sendMessage(autoNotifyFormat);
-                    }
+                    staffManager.getAllStaff().stream().map(staffName -> plugin.getServer().getPlayer(staffName)).filter(Objects::nonNull).forEach(staff -> staff.sendMessage(autoNotifyFormat));
                 }
             }
         }
