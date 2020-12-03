@@ -18,12 +18,9 @@ import java.util.logging.Logger;
 
 public class ACNotifyPlugin extends JavaPlugin {
 
-    private Utilities utilities;
-
     @Override
     public void onEnable() {
         final Server server = this.getServer();
-
         final PluginManager pluginManager = server.getPluginManager();
 
         final ConfigurationUtil configurationUtil = new ConfigurationUtil(this);
@@ -40,29 +37,29 @@ public class ACNotifyPlugin extends JavaPlugin {
 
         pluginManager.registerEvents(new ConnectionListener(staffManager, variables), this);
 
-        utilities = new Utilities(this);
+        Utilities utilities = new Utilities(this);
 
         if (!variables.isAutoNotifyEnabled()) {
-            getCommand("acnotify").setExecutor(new Notify(this, variables, staffManager));
+            getCommand("acnotify").setExecutor(new Notify(this, variables, staffManager, utilities));
         } else {
             final Logger logger = this.getLogger();
 
             if (pluginManager.getPlugin("Spartan") != null) {
-                pluginManager.registerEvents(new SpartanViolationListener(this, variables, staffManager), this);
+                pluginManager.registerEvents(new SpartanViolationListener(this, variables, staffManager, utilities), this);
 
                 logger.info("AUTO-NOTIFICATION hooked with Spartan.");
             } else if (pluginManager.getPlugin("Matrix") != null) {
-                pluginManager.registerEvents(new MatrixViolationListener(this, variables, staffManager), this);
+                pluginManager.registerEvents(new MatrixViolationListener(this, variables, staffManager, utilities), this);
 
                 logger.info("AUTO-NOTIFICATION hooked with Matrix.");
             } else if (pluginManager.getPlugin("Reflex") != null) {
-                pluginManager.registerEvents(new ReflexViolationListener(this, variables, staffManager), this);
+                pluginManager.registerEvents(new ReflexViolationListener(this, variables, staffManager, utilities), this);
 
                 logger.info("AUTO-NOTIFICATION hooked with Reflex.");
             } else {
                 variables.setAutoNotifyEnabled(false);
 
-                getCommand("acnotify").setExecutor(new Notify(this, variables, staffManager));
+                getCommand("acnotify").setExecutor(new Notify(this, variables, staffManager, utilities));
 
                 logger.info("There is no supported anti cheat plugin for AUTO-NOTIFICATION.");
                 logger.info("Supported plugins: Spartan, Reflex, Matrix.");
@@ -70,7 +67,4 @@ public class ACNotifyPlugin extends JavaPlugin {
             }
         }
     }
-
-    public Utilities getUtilities() { return utilities; }
-
 }

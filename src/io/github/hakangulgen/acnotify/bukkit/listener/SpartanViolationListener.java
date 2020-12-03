@@ -4,7 +4,6 @@ import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
 import io.github.hakangulgen.acnotify.bukkit.util.Utilities;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
-import me.vagdedes.spartan.api.API;
 import me.vagdedes.spartan.api.PlayerViolationEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,11 +16,13 @@ public class SpartanViolationListener implements Listener {
     private final ACNotifyPlugin plugin;
     private final ConfigurationVariables variables;
     private final StaffManager staffManager;
+    private final Utilities utilities;
 
-    public SpartanViolationListener(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager) {
+    public SpartanViolationListener(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager, Utilities utilities) {
         this.plugin = plugin;
         this.variables = variables;
         this.staffManager = staffManager;
+        this.utilities = utilities;
     }
 
     @EventHandler
@@ -32,10 +33,8 @@ public class SpartanViolationListener implements Listener {
 
             if (vls >= variables.getMinViolation()) {
 
-                final Utilities utilities = plugin.getUtilities();
-
                 final Player player = event.getPlayer();
-                final int ping = API.getPing(player);
+                final int ping = utilities.getPing(player);
                 final String hack = event.getHackType() + "";
                 final String autoNotifyFormat = variables.getAutoNotifyFormat()
                         .replace("&", "§")

@@ -22,16 +22,16 @@ public class ConfigurationVariables {
     public void reloadConfig() {
         final Configuration config = configurationUtil.getConfiguration("%datafolder%/config.yml");
 
-        prefix = ChatColor.translateAlternateColorCodes('&', config.getString("MESSAGES.PREFIX"));
-        onlyConsole = ChatColor.translateAlternateColorCodes('&', config.getString("MESSAGES.ONLY_CONSOLE").replace("%prefix%", prefix));
-        autoNotifyFormat = ChatColor.translateAlternateColorCodes('&', config.getString("AUTO_NOTIFICATION.FORMAT"));
-        noPermission = ChatColor.translateAlternateColorCodes('&', config.getString("MESSAGES.NO_PERMISSION").replace("%prefix%", prefix));
-        reloaded = ChatColor.translateAlternateColorCodes('&', config.getString("MESSAGES.RELOADED").replace("%prefix%", prefix));
-        serverName = config.getString("BUNGEECORD.SERVER_NAME");
-        bungeecord = config.getBoolean("BUNGEECORD.ENABLED");
-        notifyPrefix = config.getBoolean("PREFIX_FOR_NOTIFICATIONS");
-        autoNotifyEnabled = config.getBoolean("AUTO_NOTIFICATION.ENABLED");
-        minViolation = config.getInt("AUTO_NOTIFICATION.MIN_VIOLATION");
+        prefix = ChatColor.translateAlternateColorCodes('&', config.getString("messages.prefix"));
+        onlyConsole = ChatColor.translateAlternateColorCodes('&', config.getString("messages.onlyConsole").replace("%prefix%", prefix));
+        autoNotifyFormat = ChatColor.translateAlternateColorCodes('&', config.getString("auto-notification.format"));
+        noPermission = ChatColor.translateAlternateColorCodes('&', config.getString("messages.noPermission").replace("%prefix%", prefix));
+        reloaded = ChatColor.translateAlternateColorCodes('&', config.getString("messages.reloaded").replace("%prefix%", prefix));
+        serverName = config.getString("bungeecord.serverName");
+        bungeecord = config.getBoolean("bungeecord.enabled");
+        notifyPrefix = config.getBoolean("prefixForNotifications");
+        autoNotifyEnabled = config.getBoolean("auto-notification.enabled");
+        minViolation = config.getInt("auto-notification.minViolation");
     }
 
     public String getPrefix() { return prefix; }

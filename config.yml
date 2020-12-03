@@ -4,33 +4,33 @@
 # TO SEE NOTIFICATIONS: 'acnotify.see', TO RELOAD CONFIGURATION: 'acnotify.reload'
 
 # MESSAGES
-MESSAGES:
-  PREFIX: '&8[&3ACNotify&8]&r'
-  RELOADED: '%prefix% &aPlugin has been reloaded.'
-  NO_PERMISSION: '%prefix% &cYou do not have permission to use this command.'
-  ONLY_CONSOLE: '%prefix% &cThis command can only be used by a console.'
+messages:
+  prefix: '&8[&3ACNotify&8]&r'
+  reloaded: '%prefix% &aPlugin has been reloaded.'
+  noPermission: '%prefix% &cYou do not have permission to use this command.'
+  onlyConsole: '%prefix% &cThis command can only be used by a console.'
 
 # Disable this if you don't want prefix on notify command.
-PREFIX_FOR_NOTIFICATIONS: true
+prefixForNotifications: true
 
 # BUNGEECORD
-BUNGEECORD:
+bungeecord:
   # Do you want to enable BungeeCord mode?
   # Enable this if you want to send notifications every server on your network.
   # IMPORTANT: Put this plugin BungeeCord plugins folder too.
-  ENABLED: false
+  enabled: false
 
   # This is required for BungeeCord mode. (%server% variable)
-  SERVER_NAME: 'LOBBY-1'
+  serverName: 'LOBBY-1'
 
 # AUTO NOTIFICATION
 # This feature will send notifications automatic when a warning comes from anti cheat plugin.
 # This feature supports BungeeCord.
 # Supported anti cheats: Spartan, Reflex and Matrix.
-AUTO_NOTIFICATION:
+auto-notification:
   # Do you want to enable Auto Notification?
-  ENABLED: false
+  enabled: false
   # Min violation value to send notifications.
-  MIN_VIOLATION: 2
+  minViolation: 2
   # Notification format.
-  FORMAT: '%prefix% &e%player%&8:&c %hack% &8(&cVL&8:&c %vls%&8) &8| &7Ping&8:&a %ping% ms &8| &7Server:&9 %server%'
+  format: '%prefix% &e%player%&8:&c %hack% &8(&cVL&8:&c %vls%&8) &8| &7Ping&8:&a %ping% ms &8| &7Server:&9 %server%'

@@ -28,6 +28,15 @@ public class Utilities {
         }
     }
 
+    public int getPing(final Player player) {
+        try {
+            final Object playerHandle = player.getClass().getMethod("getHandle").invoke(player);
+            return (int) playerHandle.getClass().getField("ping").get(playerHandle);
+        } catch (final Exception ignored) {
+            return 0;
+        }
+    }
+
     private Player getRandomPlayer() {
         Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
         if (!players.isEmpty()) {

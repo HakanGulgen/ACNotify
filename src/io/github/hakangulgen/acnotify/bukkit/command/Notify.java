@@ -2,6 +2,7 @@ package io.github.hakangulgen.acnotify.bukkit.command;
 
 import io.github.hakangulgen.acnotify.bukkit.ACNotifyPlugin;
 import io.github.hakangulgen.acnotify.bukkit.util.ConfigurationVariables;
+import io.github.hakangulgen.acnotify.bukkit.util.Utilities;
 import io.github.hakangulgen.acnotify.shared.StaffManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,11 +17,13 @@ public class Notify implements CommandExecutor {
     private final ACNotifyPlugin plugin;
     private final ConfigurationVariables variables;
     private final StaffManager staffManager;
+    private final Utilities utilities;
 
-    public Notify(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager) {
+    public Notify(ACNotifyPlugin plugin, ConfigurationVariables variables, StaffManager staffManager, Utilities utilities) {
         this.plugin = plugin;
         this.variables = variables;
         this.staffManager = staffManager;
+        this.utilities = utilities;
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -37,7 +40,7 @@ public class Notify implements CommandExecutor {
                     final String notifyMessage = variables.isNotifyPrefix() ? variables.getPrefix() + " " + msg : msg + "";
 
                     if (variables.isBungeeModeEnabled()) {
-                        plugin.getUtilities().sendPluginMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", variables.getServerName())));
+                        utilities.sendPluginMessage(notifyMessage.replace("&", "§").replace("%server%", variables.getServerName()));
                     } else {
                         staffManager.getAllStaff().stream().map(staffName -> plugin.getServer().getPlayer(staffName)).filter(Objects::nonNull).forEach(staff -> staff.sendMessage(ChatColor.translateAlternateColorCodes('&', notifyMessage.replace("%server%", variables.getServerName()))));
                     }
